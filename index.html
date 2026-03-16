@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Репетитор по информатике | ОГЭ/ЕГЭ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ФИКСИРОВАННЫЙ ИГРОВОЙ БЛОК (СВЕРХУ) -->
+    <div class="game-container">
+        <div class="game-header">
+            <div class="game-score">
+                <span class="score-label">Раздел:</span>
+                <span class="score-value" id="stageDisplay">Python</span>
+            </div>
+            <div class="game-message" id="gameMessage"></div>
+        </div>
+
+        <!-- Дорога с драконом и кактусами -->
+        <div class="game-world" id="gameWorld">
+            <div class="dragon" id="dragon">
+                <img src="assets/dragon.png" alt="Dragon" class="dragon-img">
+            </div>
+            <div class="cactus-container" id="cactusContainer"></div>
+            <div class="trophy-container" id="trophyContainer" style="display: none;">
+                <img src="assets/trophy.png" alt="Trophy" class="trophy-img">
+            </div>
+            <div class="ground-line"></div>
+        </div>
+
+        <!-- ПРЕДУПРЕЖДЕНИЕ ПОД ДОРОГОЙ (исправлено) -->
+        <div class="game-warning">
+            ⚠️ не листайте быстро, дракончик не успевает за вашей скоростью!
+        </div>
+    </div>
+
+    <!-- НАВИГАЦИЯ (ПОД ИГРОЙ) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="#python" class="nav-link active" data-section="python">Python</a>
+                <a href="#how" class="nav-link" data-section="how">Как</a>
+                <a href="#where" class="nav-link" data-section="where">Где</a>
+                <a href="#reviews" class="nav-link" data-section="reviews">Отзывы</a>
+                <a href="#scores" class="nav-link" data-section="scores">Баллы</a>
+                <a href="#contacts" class="nav-link" data-section="contacts">Контакты</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- СЕКЦИИ -->
+    <section id="python" class="section hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Репетитор по информатике<br><span class="gradient-text">ОГЭ/ЕГЭ</span></h1>
+                <p class="hero-subtitle">Подберём индивидуальный план, обучим всему, что знаем,<br><span class="accent-text">а знаем мы много</span></p>
+                <a href="#" class="btn-primary">Занятия →</a>
+            </div>
+        </div>
+        <div class="code-decoration">
+            <span class="code-keyword">def</span> <span class="code-function">teach</span>():<br>
+            <span class="code-indent"></span><span class="code-keyword">return</span> <span class="code-string">"success"</span>
+        </div>
+    </section>
+
+    <section id="how" class="section">
+        <div class="container">
+            <h2 class="section-title"><span class="title-number">01</span><span class="title-text">Как будет учитываться?</span></h2>
+            <div class="process-grid">
+                <div class="process-card"><i class="fas fa-book process-icon"></i><h3>Изучение теории</h3></div>
+                <div class="process-card"><i class="fas fa-laptop-code process-icon"></i><h3>Работа на практике</h3></div>
+                <div class="process-card"><i class="fas fa-home process-icon"></i><h3>Домашнее задание</h3></div>
+                <div class="process-card"><i class="fas fa-chalkboard-teacher process-icon"></i><h3>Разбор дз на занятии</h3></div>
+                <div class="process-card"><i class="fas fa-pencil-alt process-icon"></i><h3>Контрольная работа</h3></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="where" class="section">
+        <div class="container">
+            <h2 class="section-title"><span class="title-number">02</span><span class="title-text">Где будет учиться?</span></h2>
+            <div class="platform-card">
+                <i class="fab fa-yandex-international platform-icon"></i>
+                <h3>Яндекс.Телемост</h3>
+                <p class="platform-desc">Занятия проводятся на платформе Яндекс.Телемост</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="section">
+        <div class="container">
+            <h2 class="section-title"><span class="title-number">03</span><span class="title-text">Отзывы</span></h2>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-header"><span class="review-author">Анна</span><span class="review-exam">ОГЭ</span></div>
+                    <p class="review-text">Илья подготовил сына к ОГЭ за 4 месяца. Итог – 5. Спасибо!</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><span class="review-author">Сергей</span><span class="review-exam">ОГЭ</span></div>
+                    <p class="review-text">Комфортный преподаватель, всё понятно. Продолжим готовиться к ЕГЭ.</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><span class="review-author">Елена</span><span class="review-exam">ЕГЭ</span></div>
+                    <p class="review-text">За короткий срок подготовил сына к ЕГЭ с нуля. Благодарны!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="scores" class="section scores-section">
+        <div class="container">
+            <h2 class="section-title"><span class="title-number">04</span><span class="title-text">Баллы</span></h2>
+            <div class="scores-grid">
+                <div class="score-card">
+                    <div class="score-icon"><i class="fas fa-star"></i></div>
+                    <div class="score-value">85+</div>
+                    <div class="score-label">Средний балл учеников</div>
+                </div>
+                <div class="score-card">
+                    <div class="score-icon"><i class="fas fa-rocket"></i></div>
+                    <div class="score-value">32</div>
+                    <div class="score-label">Ученика сдали на 5</div>
+                </div>
+                <div class="score-card">
+                    <div class="score-icon"><i class="fas fa-trophy"></i></div>
+                    <div class="score-value">100</div>
+                    <div class="score-label">Максимальный балл ЕГЭ</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacts" class="section contacts-section">
+        <div class="container">
+            <h2 class="section-title"><span class="title-number">05</span><span class="title-text">Контакты</span></h2>
+            <div class="contacts-grid">
+                <a href="#" class="contact-card" target="_blank">
+                    <i class="fab fa-vk contact-icon"></i>
+                    <span class="contact-label">ВКонтакте</span>
+                    <span class="contact-handle">@ilya_repetitor</span>
+                </a>
+                <a href="#" class="contact-card" target="_blank">
+                    <i class="fab fa-telegram contact-icon"></i>
+                    <span class="contact-label">Telegram</span>
+                    <span class="contact-handle">@ilya_teacher</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Python Repetitor</div>
+                <div class="footer-copy">© 2026 — готовим к экзаменам</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
