@@ -1,32 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Элементы
     const dragon = document.getElementById('dragon');
     const cactusContainer = document.getElementById('cactusContainer');
     const trophyContainer = document.getElementById('trophyContainer');
     const stageDisplay = document.getElementById('stageDisplay');
     const gameMessage = document.getElementById('gameMessage');
 
-    // Секции (только для победы и прогресса)
     const sections = ['python', 'how', 'where', 'reviews', 'scores', 'contacts'];
     
     // Состояние
     let gameWon = false;
     let isJumping = false;
-    let isSimulating = false; // флаг для автоматического пробега
-    let maxScroll = 0; // максимальный достигнутый процент скролла
+    let isSimulating = false; 
+    let maxScroll = 0; 
     
-    // Кактусы
     const cactusPositions = [20, 35, 50, 65];
     let cactusPassed = [false, false, false, false];
 
-    // Параметры движения
     const DRAGON_START = 5;
     const DRAGON_MAX = 80;
-    const JUMP_OFFSET = 7;       // на сколько % перелетаем кактус
-    const JUMP_DURATION = 450;     // длительность прыжка в мс
-    const TRIGGER_DISTANCE = 4;    // расстояние до кактуса для начала прыжка
+    const JUMP_OFFSET = 7;       
+    const JUMP_DURATION = 450;     
+    const TRIGGER_DISTANCE = 4;   
 
-    // ===== СОЗДАНИЕ КАКТУСОВ =====
     function createCacti() {
         cactusContainer.innerHTML = '';
         cactusPositions.forEach((pos, index) => {
@@ -44,61 +39,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===== ОБНОВЛЕНИЕ ПРОГРЕССА =====
     function updateProgress() {
-        // Определяем текущий раздел по положению дракона
         const dragonLeft = parseFloat(dragon.style.left) || DRAGON_START;
         const progressPercent = ((dragonLeft - DRAGON_START) / (DRAGON_MAX - DRAGON_START)) * 100;
         const index = Math.min(5, Math.floor(progressPercent / 20)); // 0..5
         stageDisplay.textContent = `${index}/5`;
         
-        // Подсветка навигации
         document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
         const activeLink = document.querySelector(`.nav-link[data-section="${sections[index]}"]`);
         if (activeLink) activeLink.classList.add('active');
     }
 
-    // ===== УСТАНОВКА ПОЗИЦИИ ПО СКРОЛЛУ (только вперёд) =====
     function updateDragonPositionFromScroll() {
-        // Не реагируем на скролл во время симуляции
         if (gameWon || isJumping || isSimulating) return;
         
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
         
-        // Процент прокрутки (0..100)
         const scrollPercent = (scrollY / (documentHeight - windowHeight)) * 100;
         
-        // Обновляем максимальный достигнутый процент
         if (scrollPercent > maxScroll) {
             maxScroll = scrollPercent;
         }
         
-        // Позиция дракона: от DRAGON_START до DRAGON_MAX
         const targetLeft = DRAGON_START + (maxScroll / 100) * (DRAGON_MAX - DRAGON_START);
         const currentLeft = parseFloat(dragon.style.left) || DRAGON_START;
         
-        // Двигаем только вперёд
         if (targetLeft > currentLeft) {
-            // Проверяем, не пересекаем ли мы какой-то непройденный кактус
             for (let i = 0; i < cactusPositions.length; i++) {
                 if (cactusPassed[i]) continue;
                 const cactusLeft = cactusPositions[i];
-                // Если текущая позиция слева от кактуса, а целевая — справа (или на нём)
                 if (currentLeft < cactusLeft && targetLeft >= cactusLeft) {
-                    jumpOverCactus(i);  // прыгаем через этот кактус
-                    return; // прыжок сам обновит позицию, выходим
+                    jumpOverCactus(i);  
+                    return; 
                 }
             }
             
-            // Если не пересекли ни одного кактуса — плавно двигаемся
             dragon.style.left = Math.min(targetLeft, DRAGON_MAX) + '%';
             updateProgress();
         }
     }
 
-    // ===== ПРЫЖОК ЧЕРЕЗ КАКТУС =====
     function jumpOverCactus(cactusIndex) {
         if (gameWon || isJumping || cactusPassed[cactusIndex]) return;
         
@@ -107,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const cactusLeft = cactusPositions[cactusIndex];
         const dragonLeft = parseFloat(dragon.style.left) || DRAGON_START;
         
-        // Цель – приземлиться после кактуса
         const targetLeft = cactusLeft + JUMP_OFFSET;
         
         dragon.classList.add('jump');
@@ -128,12 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 dragon.classList.remove('jump');
                 isJumping = false;
                 
-                // Отмечаем кактус пройденным
                 cactusPassed[cactusIndex] = true;
                 const cactus = document.querySelector(`.cactus[data-index="${cactusIndex}"]`);
-                if (cactus) cactus.classList.add('passed');
-                
-                // Обновляем maxScroll, чтобы после прыжка дракон не откатился назад
+                if (cactus) cactus.classList.add('passed');               
                 const newLeft = parseFloat(dragon.style.left);
                 const newScrollPercent = ((newLeft - DRAGON_START) / (DRAGON_MAX - DRAGON_START)) * 100;
                 if (newScrollPercent > maxScroll) {
@@ -147,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(animate);
     }
 
-    // ===== ПРОВЕРКА, НЕ ПОРА ЛИ ПРЫГНУТЬ (с защитой от проскока) =====
     function checkCollisions() {
         if (gameWon || isJumping || isSimulating) return;
         
@@ -157,30 +134,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cactusPassed[i]) continue;
             
             const cactusLeft = cactusPositions[i];
-            // Если дракон уже перелетел кактус (оказался справа от него) и кактус ещё не пройден
             if (dragonLeft > cactusLeft + 2) {
-                // Принудительно отмечаем кактус пройденным (значит, проскочили)
                 cactusPassed[i] = true;
                 const cactus = document.querySelector(`.cactus[data-index="${i}"]`);
                 if (cactus) cactus.classList.add('passed');
                 continue;
             }
             
-            // Если дракон подошёл к кактусу достаточно близко и ещё не перепрыгнул
             if (cactusLeft - dragonLeft < TRIGGER_DISTANCE && cactusLeft > dragonLeft) {
                 jumpOverCactus(i);
-                break; // Прыгаем только через один кактус за раз
+                break; 
             }
         }
     }
 
-    // ===== АВТОМАТИЧЕСКИЙ ПРОБЕГ ДО КОНТАКТОВ =====
     function simulateRunToContacts() {
         if (gameWon || isSimulating) return;
         
         isSimulating = true;
         
-        // Собираем индексы непройденных кактусов в порядке возрастания
         let indices = [];
         for (let i = 0; i < cactusPositions.length; i++) {
             if (!cactusPassed[i]) indices.push(i);
@@ -188,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         function processNext() {
             if (indices.length === 0) {
-                // Все кактусы пройдены – победа
                 win();
                 isSimulating = false;
                 return;
@@ -197,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const nextIdx = indices.shift();
             jumpOverCactus(nextIdx);
             
-            // Ждём окончания прыжка
             const checkInterval = setInterval(() => {
                 if (!isJumping) {
                     clearInterval(checkInterval);
@@ -209,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
         processNext();
     }
 
-    // ===== ПОБЕДА =====
     function win() {
         if (gameWon) return;
         
@@ -232,21 +201,19 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('🎉 ПОБЕДА НА КОНТАКТАХ!');
     }
 
-    // ===== ПРОВЕРКА ПОБЕДЫ (ПО ДОСТИЖЕНИЮ КОНЦА) =====
     function checkWinCondition() {
         if (gameWon || isSimulating) return;
         
         const dragonLeft = parseFloat(dragon.style.left) || DRAGON_START;
-        if (dragonLeft >= DRAGON_MAX - 1) { // почти у финиша
+        if (dragonLeft >= DRAGON_MAX - 1) { 
             win();
         }
     }
 
-    // ===== СБРОС ПРИ ВОЗВРАТЕ НАВЕРХ =====
     function checkReset() {
         const scrollY = window.scrollY;
         
-        if (scrollY < 50) {   // пользователь в самом верху
+        if (scrollY < 50) { 
             gameWon = false;
             isJumping = false;
             isSimulating = false;
@@ -262,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ===== ОБРАБОТЧИК СКРОЛЛА =====
     function onScroll() {
         checkReset();
         if (!gameWon && !isSimulating) {
@@ -270,7 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ===== ИНТЕРВАЛ ДЛЯ ПОДСТРАХОВКИ =====
     setInterval(() => {
         if (!gameWon && !isJumping && !isSimulating) {
             checkCollisions();
@@ -278,7 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 100);
 
-    // ===== ПЛАВНЫЙ СКРОЛЛ ПО КЛИКУ =====
     document.querySelectorAll('.nav-link, .btn-primary').forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
@@ -290,10 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         top: target.offsetTop - 180,
                         behavior: 'smooth'
                     });
-                    
-                    // Если это кнопка "Занятия →" и она ведёт на контакты – запускаем симуляцию
                     if (link.classList.contains('btn-primary') && href === '#contacts') {
-                        // Даём время скроллу немного продвинуться, затем стартуем пробег
                         setTimeout(simulateRunToContacts, 500);
                     }
                 }
@@ -301,14 +262,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ===== ПОДКЛЮЧАЕМ КОНФЕТТИ =====
     if (!window.confetti) {
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1';
         document.head.appendChild(script);
     }
 
-    // ===== СТАРТ =====
     createCacti();
     dragon.style.left = DRAGON_START + '%';
     updateProgress();

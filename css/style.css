@@ -30,7 +30,6 @@ body {
     padding: 0 24px;
 }
 
-/* ===== ИГРОВОЙ КОНТЕЙНЕР ===== */
 .game-container {
     position: fixed;
     top: 0;
@@ -163,7 +162,6 @@ body {
     50% { transform: translateY(-10px); }
 }
 
-/* ===== ПРЕДУПРЕЖДЕНИЕ ===== */
 .game-warning {
     max-width: 1200px;
     margin: 8px auto 4px;
@@ -185,7 +183,6 @@ body {
     50% { opacity: 0.4; }
 }
 
-/* ===== НАВИГАЦИЯ ===== */
 .navbar {
     position: fixed;
     top: 210px;
@@ -234,7 +231,6 @@ body {
     width: 100%;
 }
 
-/* ===== СЕКЦИИ ===== */
 .section {
     padding: 80px 0;
     scroll-margin-top: 260px;
@@ -285,7 +281,6 @@ body {
     box-shadow: 0 0 20px var(--accent-primary);
 }
 
-/* Code decoration (пульсация как у карточек) */
 .code-decoration {
     position: absolute;
     right: 5%;
@@ -300,7 +295,7 @@ body {
     color: #6272a4;
     transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s, opacity 0.3s;
     z-index: 10;
-    pointer-events: auto; /* убедились, что не auto */
+    pointer-events: auto; 
 }
 
 .code-decoration:hover {
@@ -339,7 +334,6 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-/* Карточки */
 .process-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
@@ -366,7 +360,6 @@ body {
     margin-bottom: 16px;
 }
 
-/* Платформа */
 .platform-card-link {
     text-decoration: none;
     display: block;
@@ -402,7 +395,6 @@ body {
     filter: drop-shadow(0 0 15px rgba(0, 204, 255, 0.7));
 }
 
-/* Отзывы */
 .reviews-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
@@ -432,13 +424,11 @@ body {
     font-weight: 600;
 }
 
-/* Контейнер для кнопки "Больше отзывов" */
 .reviews-button-container {
     text-align: center;
     margin-top: 40px;
 }
 
-/* Баллы */
 .scores-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -481,7 +471,6 @@ body {
     font-size: 1.1rem;
 }
 
-/* Контакты */
 .contacts-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -525,7 +514,6 @@ body {
     font-size: 1.1rem;
 }
 
-/* Футер */
 .footer {
     background: var(--bg-card);
     border-top: 1px solid var(--border-color);
@@ -551,7 +539,6 @@ body {
     color: var(--text-secondary);
 }
 
-/* ===== АДАПТАЦИЯ ПОД МОБИЛЬНЫЕ ===== */
 @media (max-width: 768px) {
     body {
         padding-top: 250px;
@@ -631,7 +618,6 @@ body {
     }
 }
 
-/* ===== HERO С ФОТОГРАФИЕЙ ===== */
 .hero-container {
     display: flex;
     align-items: center;
@@ -656,9 +642,8 @@ body {
     border: 2px solid var(--accent-primary);
 }
 
-/* Переопределяем старый .code-decoration для работы внутри hero-content */
 .hero-content .code-decoration {
-    position: relative;  /* сбрасываем absolute */
+    position: relative; 
     right: auto;
     top: auto;
     margin-top: 30px;
@@ -667,10 +652,9 @@ body {
     font-size: 1.4rem;
     padding: 15px 20px;
     max-width: 100%;
-    display: inline-block; /* чтобы не растягивался на всю ширину */
+    display: inline-block; 
 }
 
-/* Адаптация для мобильных */
 @media (max-width: 768px) {
     .hero-container {
         flex-direction: column;
