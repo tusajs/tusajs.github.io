@@ -12,7 +12,7 @@
 </head>
 <body>
 
-    <!-- ФИКСИРОВАННЫЙ ИГРОВОЙ БЛОК (СВЕРХУ) -->
+    <!-- ФИКСИРОВАННЫЙ ИГРОВОЙ БЛОК -->
     <div class="game-container">
         <div class="game-header">
             <div class="game-score">
@@ -22,7 +22,6 @@
             <div class="game-message" id="gameMessage"></div>
         </div>
 
-        <!-- Дорога с драконом и кактусами -->
         <div class="game-world" id="gameWorld">
             <div class="dragon" id="dragon">
                 <img src="assets/dragon.png" alt="Dragon" class="dragon-img">
@@ -34,13 +33,12 @@
             <div class="ground-line"></div>
         </div>
 
-        <!-- ПРЕДУПРЕЖДЕНИЕ ПОД ДОРОГОЙ (исправлено) -->
         <div class="game-warning">
             ⚠️ не листайте быстро, дракончик не успевает за вашей скоростью!
         </div>
     </div>
 
-    <!-- НАВИГАЦИЯ (ПОД ИГРОЙ) -->
+    <!-- НАВИГАЦИЯ -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-links">
@@ -56,18 +54,21 @@
 
     <!-- СЕКЦИИ -->
     <section id="python" class="section hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Репетитор по информатике<br><span class="gradient-text">ОГЭ/ЕГЭ</span></h1>
-                <p class="hero-subtitle">Подберём индивидуальный план, обучим всему, что знаем,<br><span class="accent-text">а знаем мы много</span></p>
-                <a href="#" class="btn-primary">Занятия →</a>
-            </div>
+    <div class="container hero-container">  <!-- добавлен класс hero-container для стилей -->
+        <div class="hero-content">
+            <h1 class="hero-title">Репетитор по информатике<br><span class="gradient-text">ОГЭ/ЕГЭ</span></h1>
+            <p class="hero-subtitle">Подберём индивидуальный план, обучим всему, что знаем, <span class="accent-text">а знаем мы много</span></p>
+            <a href="#contacts" class="btn-primary">Записаться на занятия →</a>
+            <!-- блок с кодом перенесён сюда и убрано абсолютное позиционирование -->
         </div>
-        <div class="code-decoration">
-            <span class="code-keyword">def</span> <span class="code-function">teach</span>():<br>
-            <span class="code-indent"></span><span class="code-keyword">return</span> <span class="code-string">"success"</span>
+        <div class="hero-image">
+            <img src="assets/foto.png" alt="Илья" class="foto-img">
+            <p>Илья, Ваш репетитор по информатике :]</p>
         </div>
-    </section>
+        
+    </div>
+    <!-- старый блок .code-decoration удалён отсюда -->
+</section>
 
     <section id="how" class="section">
         <div class="container">
@@ -85,13 +86,13 @@
     <section id="where" class="section">
         <div class="container">
             <h2 class="section-title"><span class="title-number">02</span><span class="title-text">Где будем учиться?</span></h2>
-                <a href="https://telemost.yandex.ru/" class="platform-card-link" target="_blank">
-                   <div class="platform-card">
-                        <img src="assets/telemost.png" alt="Яндекс.Телемост" class="platform-logo">
-                        <h3>Яндекс.Телемост</h3>
-                        <p class="platform-desc">Занятия проводятся на платформе Яндекс.Телемост</p>
-                    </div>
-                </a>
+            <a href="https://telemost.yandex.ru/" class="platform-card-link" target="_blank">
+                <div class="platform-card">
+                    <img src="assets/telemost.png" alt="Яндекс.Телемост" class="platform-logo">
+                    <h3>Яндекс.Телемост</h3>
+                    <p class="platform-desc">Занятия проводятся на платформе Яндекс.Телемост</p>
+                </div>
+            </a>
         </div>
     </section>
 
@@ -111,6 +112,10 @@
                     <div class="review-header"><span class="review-author">Дарья</span><span class="review-exam">ОГЭ</span></div>
                     <p class="review-text">Илья комфортно, отлично подготовил сына к ОГЭ, понятно все объясняет, удобно по времени и по общению молодой человек 🤍 Продолжим с подготовкой к ЕГЭ</p>
                 </div>
+            </div>
+            <!-- Кнопка "Больше отзывов" (ссылку заменишь) -->
+            <div class="reviews-button-container">
+                <a href="https://www.avito.ru/brands/2cc0a18ede6da67515d6c8a3e5595205/all/predlozheniya_uslug?sellerId=3dbd224be99730b7c5da8185fbe8c334" class="btn-primary">Больше отзывов →</a>
             </div>
         </div>
     </section>

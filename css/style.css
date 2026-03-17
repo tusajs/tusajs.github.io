@@ -21,7 +21,7 @@ body {
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
-    padding-top: 240px; /* Увеличено, чтобы хватило места для предупреждения */
+    padding-top: 240px;
 }
 
 .container {
@@ -80,7 +80,6 @@ body {
     overflow: visible;
 }
 
-/* Дракон (без подсветки) */
 .dragon {
     position: absolute;
     bottom: 25px;
@@ -96,7 +95,6 @@ body {
     object-fit: contain;
 }
 
-/* Кактус (без подсветки) */
 .cactus {
     position: absolute;
     bottom: 25px;
@@ -115,7 +113,6 @@ body {
     opacity: 0.2;
 }
 
-/* Кубок */
 .trophy-container {
     position: absolute;
     bottom: 30px;
@@ -142,7 +139,6 @@ body {
     background: var(--border-color);
 }
 
-/* Анимация прыжка */
 @keyframes jump {
     0%, 100% { bottom: 70px; }
     50% { bottom: 90px; }
@@ -167,7 +163,7 @@ body {
     50% { transform: translateY(-10px); }
 }
 
-/* ===== ПРЕДУПРЕЖДЕНИЕ ПОД ДОРОГОЙ ===== */
+/* ===== ПРЕДУПРЕЖДЕНИЕ ===== */
 .game-warning {
     max-width: 1200px;
     margin: 8px auto 4px;
@@ -189,10 +185,10 @@ body {
     50% { opacity: 0.4; }
 }
 
-/* ===== НАВИГАЦИЯ (ПОД ИГРОЙ) ===== */
+/* ===== НАВИГАЦИЯ ===== */
 .navbar {
     position: fixed;
-    top: 210px; /* Поднято, чтобы учесть высоту предупреждения */
+    top: 210px;
     left: 0;
     right: 0;
     background: var(--bg-card);
@@ -241,7 +237,7 @@ body {
 /* ===== СЕКЦИИ ===== */
 .section {
     padding: 80px 0;
-    scroll-margin-top: 260px; /* Увеличено, чтобы при клике по навигации не перекрывалось шапкой */
+    scroll-margin-top: 260px;
 }
 
 .hero {
@@ -289,7 +285,7 @@ body {
     box-shadow: 0 0 20px var(--accent-primary);
 }
 
-/* Code decoration */
+/* Code decoration (пульсация как у карточек) */
 .code-decoration {
     position: absolute;
     right: 5%;
@@ -302,7 +298,15 @@ body {
     border-radius: 20px;
     border: 1px solid rgba(0,255,136,0.1);
     color: #6272a4;
-    pointer-events: none;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s, opacity 0.3s;
+    z-index: 10;
+    pointer-events: auto; /* убедились, что не auto */
+}
+
+.code-decoration:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 30px rgba(0,255,136,0.3);
 }
 
 .code-keyword { color: #ff79c6; }
@@ -363,6 +367,18 @@ body {
 }
 
 /* Платформа */
+.platform-card-link {
+    text-decoration: none;
+    display: block;
+    max-width: 500px;
+    margin: 0 auto;
+    transition: transform 0.3s;
+}
+
+.platform-card-link:hover {
+    transform: translateY(-5px);
+}
+
 .platform-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -371,12 +387,19 @@ body {
     text-align: center;
     max-width: 500px;
     margin: 0 auto;
+    color: #ffffff;
 }
 
-.platform-icon {
-    font-size: 3rem;
-    color: var(--accent-secondary);
+.platform-logo {
+    width: 100px;
+    height: auto;
     margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(0, 204, 255, 0.3));
+    transition: filter 0.3s;
+}
+
+.platform-card-link:hover .platform-logo {
+    filter: drop-shadow(0 0 15px rgba(0, 204, 255, 0.7));
 }
 
 /* Отзывы */
@@ -407,6 +430,12 @@ body {
     padding: 4px 12px;
     border-radius: 20px;
     font-weight: 600;
+}
+
+/* Контейнер для кнопки "Больше отзывов" */
+.reviews-button-container {
+    text-align: center;
+    margin-top: 40px;
 }
 
 /* Баллы */
@@ -522,60 +551,154 @@ body {
     color: var(--text-secondary);
 }
 
-/* Адаптив */
+/* ===== АДАПТАЦИЯ ПОД МОБИЛЬНЫЕ ===== */
 @media (max-width: 768px) {
-    body { padding-top: 250px; }
-    .navbar { top: 220px; } /* чуть выше, чтобы поместилось */
-    .nav-links { gap: 20px; }
-    .scores-grid { grid-template-columns: 1fr; }
-    .contacts-grid { grid-template-columns: 1fr; }
-    .title-number { font-size: 3rem; }
-    .title-text { font-size: 1.5rem; }
-    .section { scroll-margin-top: 280px; }
+    body {
+        padding-top: 250px;
+    }
+
+    .navbar {
+        top: 220px;
+    }
+
+    .nav-links {
+        gap: 20px;
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .scores-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contacts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .title-number {
+        font-size: 3rem;
+    }
+
+    .title-text {
+        font-size: 1.5rem;
+    }
+
+    .section {
+        scroll-margin-top: 280px;
+    }
 
     .game-warning {
         font-size: 0.7rem;
         padding: 4px 10px;
     }
+
+    .reviews-button-container {
+        margin-top: 30px;
+    }
+
+    .code-decoration {
+        font-size: 1.2rem;
+        padding: 12px;
+        right: 3%;
+        top: 20%;
+        opacity: 0.9;
+    }
 }
 
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
 
-/* Платформа */
-.platform-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 24px;
-    padding: 40px;
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+
+    .code-decoration {
+        font-size: 0.9rem;
+        padding: 8px;
+        right: 2%;
+        top: 15%;
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(2px);
+    }
+}
+
+/* ===== HERO С ФОТОГРАФИЕЙ ===== */
+.hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 120px;
+}
+
+.hero-content {
+    flex: 1;
+}
+
+.hero-image {
+    flex: 1;
     text-align: center;
-    max-width: 500px;
-    margin: 0 auto;
-    color: #ffffff; /* белый текст */
 }
 
-.platform-logo {
-    width: 100px;
+.foto-img {
+    max-width: 70%;
     height: auto;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 0 10px rgba(0, 204, 255, 0.3));
-    transition: filter 0.3s;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+    border: 2px solid var(--accent-primary);
 }
 
-.platform-card-link {
-    text-decoration: none;
-    display: block;
-    max-width: 500px;
-    margin: 0 auto;
-    transition: transform 0.3s;
+/* Переопределяем старый .code-decoration для работы внутри hero-content */
+.hero-content .code-decoration {
+    position: relative;  /* сбрасываем absolute */
+    right: auto;
+    top: auto;
+    margin-top: 30px;
+    margin-left: 60px;
+    text-align: left;
+    font-size: 1.4rem;
+    padding: 15px 20px;
+    max-width: 100%;
+    display: inline-block; /* чтобы не растягивался на всю ширину */
 }
 
-.platform-card-link:hover {
-    transform: translateY(-5px);
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .hero-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .hero-image {
+        width: 100%;
+    }
+    
+    .foto-img {
+        max-width: 80%;
+        margin: 0 auto;
+    }
+    
+    .hero-content .code-decoration {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 1.2rem;
+    }
 }
 
-.platform-card-link:hover .platform-logo {
-    filter: drop-shadow(0 0 15px rgba(0, 204, 255, 0.7));
-}
-
-#where.section {
-    padding-bottom: 0px; 
+@media (max-width: 480px) {
+    .foto-img {
+        max-width: 100%;
+    }
+    .hero-content .code-decoration {
+        font-size: 1rem;
+        padding: 10px;
+    }
 }

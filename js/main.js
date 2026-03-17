@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Состояние
     let gameWon = false;
     let isJumping = false;
+    let isSimulating = false; // флаг для автоматического пробега
     let maxScroll = 0; // максимальный достигнутый процент скролла
     
     // Кактусы
@@ -58,9 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===== УСТАНОВКА ПОЗИЦИИ ПО СКРОЛЛУ (только вперёд) =====
-    // ===== УСТАНОВКА ПОЗИЦИИ ПО СКРОЛЛУ (только вперёд) =====
     function updateDragonPositionFromScroll() {
-        if (gameWon || isJumping) return;
+        // Не реагируем на скролл во время симуляции
+        if (gameWon || isJumping || isSimulating) return;
         
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
@@ -148,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== ПРОВЕРКА, НЕ ПОРА ЛИ ПРЫГНУТЬ (с защитой от проскока) =====
     function checkCollisions() {
-        if (gameWon || isJumping) return;
+        if (gameWon || isJumping || isSimulating) return;
         
         const dragonLeft = parseFloat(dragon.style.left) || DRAGON_START;
         
@@ -171,6 +172,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 break; // Прыгаем только через один кактус за раз
             }
         }
+    }
+
+    // ===== АВТОМАТИЧЕСКИЙ ПРОБЕГ ДО КОНТАКТОВ =====
+    function simulateRunToContacts() {
+        if (gameWon || isSimulating) return;
+        
+        isSimulating = true;
+        
+        // Собираем индексы непройденных кактусов в порядке возрастания
+        let indices = [];
+        for (let i = 0; i < cactusPositions.length; i++) {
+            if (!cactusPassed[i]) indices.push(i);
+        }
+        
+        function processNext() {
+            if (indices.length === 0) {
+                // Все кактусы пройдены – победа
+                win();
+                isSimulating = false;
+                return;
+            }
+            
+            const nextIdx = indices.shift();
+            jumpOverCactus(nextIdx);
+            
+            // Ждём окончания прыжка
+            const checkInterval = setInterval(() => {
+                if (!isJumping) {
+                    clearInterval(checkInterval);
+                    processNext();
+                }
+            }, 50);
+        }
+        
+        processNext();
     }
 
     // ===== ПОБЕДА =====
@@ -198,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== ПРОВЕРКА ПОБЕДЫ (ПО ДОСТИЖЕНИЮ КОНЦА) =====
     function checkWinCondition() {
-        if (gameWon) return;
+        if (gameWon || isSimulating) return;
         
         const dragonLeft = parseFloat(dragon.style.left) || DRAGON_START;
         if (dragonLeft >= DRAGON_MAX - 1) { // почти у финиша
@@ -213,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scrollY < 50) {   // пользователь в самом верху
             gameWon = false;
             isJumping = false;
+            isSimulating = false;
             maxScroll = 0;
             cactusPassed = [false, false, false, false];
             
@@ -228,20 +265,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== ОБРАБОТЧИК СКРОЛЛА =====
     function onScroll() {
         checkReset();
-        if (!gameWon) {
+        if (!gameWon && !isSimulating) {
             updateDragonPositionFromScroll();
-            // Не вызываем checkCollisions здесь, чтобы не мешать анимации, но можно оставить для надёжности
-            // Но чтобы избежать лишних вызовов, будем полагаться на интервал
         }
     }
 
     // ===== ИНТЕРВАЛ ДЛЯ ПОДСТРАХОВКИ =====
     setInterval(() => {
-        if (!gameWon && !isJumping) {
+        if (!gameWon && !isJumping && !isSimulating) {
             checkCollisions();
             checkWinCondition();
         }
-    }, 100); // проверяем каждые 100 мс
+    }, 100);
 
     // ===== ПЛАВНЫЙ СКРОЛЛ ПО КЛИКУ =====
     document.querySelectorAll('.nav-link, .btn-primary').forEach(link => {
@@ -255,6 +290,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         top: target.offsetTop - 180,
                         behavior: 'smooth'
                     });
+                    
+                    // Если это кнопка "Занятия →" и она ведёт на контакты – запускаем симуляцию
+                    if (link.classList.contains('btn-primary') && href === '#contacts') {
+                        // Даём время скроллу немного продвинуться, затем стартуем пробег
+                        setTimeout(simulateRunToContacts, 500);
+                    }
                 }
             }
         });
@@ -278,4 +319,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('🔥 Дракон едет только вперёд и перепрыгивает кактусы!');
     console.log('🛡️ Добавлена защита от быстрого скролла');
+    console.log('🎮 При клике на "Занятия" дракон сам пробежит дистанцию');
 });
